@@ -1,0 +1,7 @@
+# Open Kitty terminal emulator as a single instance (instead of CMD + n)
+cmd + shift - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~
+
+# Yabai Service configured to Hyper
+hyper - r : yabai --restart-service
+hyper - s : yabai --start-service
+hyper - q : yabai --stop-service

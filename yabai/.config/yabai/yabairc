@@ -1,0 +1,55 @@
+# Yabai Scripting Addition
+# SIP must be partially disabled for this to run
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+yabai -m config layout bsp
+
+# Set all padding and gaps (default: 0)
+yabai -m config top_padding     15
+yabai -m config bottom_padding  20
+yabai -m config left_padding    20
+yabai -m config right_padding   20
+yabai -m config window_gap      10
+
+# Set mouse interaction modifier key (default: fn)
+yabai -m config mouse_modifier  fn
+
+# Set modifier + m1 drag to move window (default: move)
+yabai -m config mouse_action1 move
+
+# Set modifier + m2 resize window (default: resize)
+yabai -m config mouse_action2 resize
+
+# Set focus follows mouse mode (default: off)
+yabai -m config focus_follows_mouse autofocus
+
+# Set mouse follows focus mode (default: off)
+yabai -m config mouse_follows_focus on
+
+# Ignore some applications like Zoom, System Settings, Calculator
+yabai -m rule --add app="^System Settings$" manage=off
+yabai -m rule --add app="^Calculator$" manage=off
+
+# set focus follows mouse mode (default: off, options: off, autoraise, autofocus)
+yabai -m config focus_follows_mouse	autofocus
+
+# Disable mouse_follows_focus and focus_follows_mouse when a Zoom window
+# is focused because the menu is a separate window causing problems
+yabai -m signal --add event=window_focused app="^zoom.us$" action="yabai -m config mouse_follows_focus off"
+yabai -m signal --add event=window_focused app="^zoom.us$" action="yabai -m config focus_follows_mouse off"
+
+# renable mouse_follows_focus and focus_follows_mouse autofocus after Zoom
+# meeting is finished
+yabai -m signal --add event=application_deactivated app="^zoom.us$" action="yabai -m config mouse_follows_focus on"
+yabai -m signal --add event=application_terminated app="^zoom.us$" action="yabai -m config mouse_follows_focus on"
+yabai -m signal --add event=application_hidden app="^zoom.us$" action="yabai -m config mouse_follows_focus on"
+yabai -m signal --add event=window_destroyed app="^zoom.us$" action="yabai -m config mouse_follows_focus on"
+yabai -m signal --add event=window_minimized app="^zoom.us$" action="yabai -m config mouse_follows_focus on"
+yabai -m signal --add event=application_deactivated app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
+yabai -m signal --add event=application_terminated app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
+yabai -m signal --add event=application_hidden app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
+yabai -m signal --add event=window_destroyed app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
+yabai -m signal --add event=window_minimized app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
+
+borders active_color=0xff65c8d0 inactive_color=0xff043b3f width=5.0 &
