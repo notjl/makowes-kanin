@@ -51,5 +51,3 @@ yabai -m signal --add event=application_terminated app="^zoom.us$" action="yabai
 yabai -m signal --add event=application_hidden app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
 yabai -m signal --add event=window_destroyed app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
 yabai -m signal --add event=window_minimized app="^zoom.us$" action="yabai -m config focus_follows_mouse autofocus"
-
-borders active_color=0xff65c8d0 inactive_color=0xff043b3f width=5.0 &
