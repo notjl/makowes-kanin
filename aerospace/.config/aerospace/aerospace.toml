@@ -1,0 +1,107 @@
+# Start AeroSpace at login
+start-at-login = true
+
+# Normalizations
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Accordion Padding
+accordion-padding = 30
+
+# Default layout
+default-root-container-layout = 'tiles'
+
+# Default orientation
+default-root-container-orientation = 'auto'
+
+# Keymap
+key-mapping.preset = 'qwerty'
+
+# Gaps
+[gaps.inner]
+horizontal  = 20
+vertical    = 20
+
+[gaps.outer]
+top         = 15
+bottom      = 15
+left        = 15
+right       = 15
+
+# Main Bindings
+[mode.main.binding]
+
+# Open a kitty terminal
+cmd-shift-enter = 'exec-and-forget /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~'
+
+# Change layout
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# Toggle floating or tile on focused window
+cmd-ctrl-shift-alt-f = 'layout floating tiling'
+
+# Change focused window
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Move window position 
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Resize focused window
+alt-shift-minus = 'resize smart -50'
+alt-shift-equal = 'resize smart +50'
+
+# Navigate Workspaces
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+# Move focused window to workspace
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+alt-shift-4 = 'move-node-to-workspace 4'
+alt-shift-5 = 'move-node-to-workspace 5'
+alt-shift-6 = 'move-node-to-workspace 6'
+alt-shift-7 = 'move-node-to-workspace 7'
+alt-shift-8 = 'move-node-to-workspace 8'
+alt-shift-9 = 'move-node-to-workspace 9'
+
+# Navigate workspace back and forth
+alt-tab = 'workspace-back-and-forth'
+
+# Enter Service Mode
+alt-shift-semicolon = 'mode service'
+
+# Service Bindings
+[mode.service.binding]
+
+# Reload config
+esc = ['reload-config', 'mode main']
+
+# Reset layout
+r = ['flatten-workspace-tree', 'mode main']
+
+# Toggle focused window between tiling and floating
+f = ['layout floating tiling', 'mode main']
+
+# Close all windows but focused
+backspace = ['close-all-windows-but-current', 'mode main']
+
+# Join node to another node
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
