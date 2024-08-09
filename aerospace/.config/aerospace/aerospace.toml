@@ -1,3 +1,8 @@
+# Exec commands after startup of the AeroSpace
+after-startup-command = [
+    'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
+]
+
 # Start AeroSpace at login
 start-at-login = true
 
