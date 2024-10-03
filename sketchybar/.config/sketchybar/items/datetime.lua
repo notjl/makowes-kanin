@@ -1,8 +1,10 @@
+local colors = require("config.colors")
+
 local clock = sbar.add("item", "clock",{
   position = "right",
   update_freq = 10,
   background = {
-    color = 0x85585b70,
+    color = colors.change_alpha(colors.surface0, 0.9),
     height = 22,
   },
   icon = {
@@ -24,7 +26,7 @@ local date = sbar.add("item", "date", {
   position = "right",
   update_freq = 10,
   background = {
-    color = 0x85585b70,
+    color = colors.change_alpha(colors.surface1, 0.9),
     height = 22,
   },
   icon = {
