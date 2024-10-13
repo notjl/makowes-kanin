@@ -18,7 +18,7 @@ sbar.default({
     font = {
       family = "UbuntuMono Nerd Font",
       style = "Bold",
-      size = 14.0,
+      size = 15.0,
     },
   },
   label = {
