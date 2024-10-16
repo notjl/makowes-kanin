@@ -16,7 +16,10 @@ clock:subscribe({"routine", "forced"}, function()
 
   local string = hour .. os.date("%M")
   clock:set({
-    icon = "󱑓",
+    icon = {
+      string = "􀐫",
+      y_offset = 1,
+    },
     label = string,
     background = {
       border_color = color,

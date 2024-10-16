@@ -4,7 +4,7 @@ local colors = require("config.colors")
 
 local wifi = sbar.add("item", "wifi", {
   position = "right",
-  padding_right = 8,
+  padding_right = 10,
   width = 0,
   icon = {
     padding_right = 0,
@@ -20,7 +20,7 @@ local wifi_bracket = sbar.add("bracket", "wifi.bracket", {
   "wifi.down",
 }, {
   background = {
-    height = 35
+    height = 35,
   },
 })
 
@@ -52,8 +52,9 @@ wifi:subscribe({"wifi_change", "system_woke"}, function(env)
     local connected = not (ip == "")
     wifi:set({
       icon = {
-        string = connected and "󰖩" or "󰖪",
+        string = connected and "􀙇 " or "􀙈 ",
         color = colors.white,
+        y_offset = 1,
       },
     })
     wifi_bracket:set({
@@ -88,9 +89,9 @@ end
 local function toggle_load_detail()
   local should_draw = wifi_down:query().icon.width == 0
   if should_draw then
-    sbar.animate("tanh", 25, show_load_detail)
+    sbar.animate("tanh", 30, show_load_detail)
   else
-    sbar.animate("tanh", 25, hide_load_detail)
+    sbar.animate("tanh", 30, hide_load_detail)
   end
 end
 

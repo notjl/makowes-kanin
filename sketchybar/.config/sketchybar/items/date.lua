@@ -19,7 +19,11 @@ date:subscribe({"system_wake", "routine", "forced"}, function()
   }
   local day = os.date("%w")
   date:set({
-    icon = "", 
+    --icon = "", 
+    icon = {
+      string = "􀉉",
+      y_offset = 1,
+    },
     label = day .. os.date("%d%m%Y"),
     background = {
       border_color = days_color[tonumber(day) + 1],
