@@ -1,13 +1,16 @@
 local wifi_up = require("items.wifi_up")
 local wifi_down = require("items.wifi_down")
 local colors = require("config.colors")
+local icons = require("config.icons")
 
 local wifi = sbar.add("item", "wifi", {
   position = "right",
   padding_right = 10,
-  width = 0,
   icon = {
     padding_right = 0,
+  },
+  background = {
+    drawing = false,
   },
   label = {
     drawing = false,
@@ -52,7 +55,7 @@ wifi:subscribe({"wifi_change", "system_woke"}, function(env)
     local connected = not (ip == "")
     wifi:set({
       icon = {
-        string = connected and "􀙇 " or "􀙈 ",
+        string = connected and icons.sf_symbol.wifi.connected or icons.sf_symbol.wifi.disconnected,
         color = colors.white,
         y_offset = 1,
       },

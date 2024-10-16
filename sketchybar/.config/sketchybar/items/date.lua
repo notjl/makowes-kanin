@@ -1,4 +1,5 @@
 local colors = require("config.colors")
+local icons = require("config.icons")
 
 local date = sbar.add("item", "date", {
   position = "right",
@@ -21,7 +22,7 @@ date:subscribe({"system_wake", "routine", "forced"}, function()
   date:set({
     --icon = "", 
     icon = {
-      string = "􀉉",
+      string = icons.sf_symbol.calendar,
       y_offset = 1,
     },
     label = day .. os.date("%d%m%Y"),

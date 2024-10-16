@@ -1,4 +1,5 @@
 local colors = require("config.colors")
+local icons = require("config.icons")
 
 sbar.exec("killall network_load >/dev/null; $CONFIG_DIR/helpers/event_providers/network_load/bin/network_load en0 network_update 2.0")
 
@@ -8,7 +9,7 @@ local wifi_up = sbar.add("item", "wifi.up", {
   padding_left = -5,
   icon = {
     padding_right = 0,
-    string = "􀓂",
+    string = icons.sf_symbol.wifi.upload,
     font = {
       size = 12.0
     },

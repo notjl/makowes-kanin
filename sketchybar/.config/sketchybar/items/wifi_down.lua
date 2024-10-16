@@ -1,4 +1,5 @@
 local colors = require("config.colors")
+local icons = require("config.icons")
 
 local wifi_down = sbar.add("item", "wifi.down", {
   position = "right",
@@ -8,7 +9,7 @@ local wifi_down = sbar.add("item", "wifi.down", {
   },
   icon = {
     padding_right = 0,
-    string = "􀓃",
+    string = icons.sf_symbol.wifi.download,
     font = {
       size = 12.0
     },
