@@ -2,10 +2,11 @@ local colors = require("config.colors")
 
 local date = sbar.add("item", "date", {
   position = "right",
+  padding_left = 8,
   update_freq = 60,
 })
 
-date:subscribe({"routine", "forced"}, function()
+date:subscribe({"system_wake", "routine", "forced"}, function()
   local alpha = 0.45
   local days_color = {
     colors.change_alpha(colors.red, alpha),
@@ -18,7 +19,7 @@ date:subscribe({"routine", "forced"}, function()
   }
   local day = os.date("%w")
   date:set({
-    icon = "􀉉", 
+    icon = "", 
     label = day .. os.date("%d%m%Y"),
     background = {
       border_color = days_color[tonumber(day) + 1],
