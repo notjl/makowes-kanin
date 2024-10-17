@@ -7,6 +7,7 @@ local wifi_up = sbar.add("item", "wifi.up", {
   position = "right",
   width = 0,
   padding_left = -5,
+  y_offset = 6,
   icon = {
     padding_right = 0,
     string = icons.sf_symbol.wifi.upload,
@@ -20,7 +21,6 @@ local wifi_up = sbar.add("item", "wifi.up", {
       size = 13.0
     },
   },
-  y_offset = 6,
 })
 
 wifi_up:subscribe("network_update", function(env)

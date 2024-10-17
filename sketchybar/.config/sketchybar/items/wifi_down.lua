@@ -4,6 +4,7 @@ local icons = require("config.icons")
 local wifi_down = sbar.add("item", "wifi.down", {
   position = "right",
   padding_left = -8,
+  y_offset = -3,
   background = {
     drawing = false,
   },
@@ -20,7 +21,6 @@ local wifi_down = sbar.add("item", "wifi.down", {
       size = 13.0
     },
   },
-  y_offset = -3,
 })
 
 wifi_down:subscribe("network_update", function(env)
