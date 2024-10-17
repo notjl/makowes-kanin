@@ -6,7 +6,6 @@ sbar.exec("killall network_load >/dev/null; $CONFIG_DIR/helpers/event_providers/
 local wifi_up = sbar.add("item", "wifi.up", {
   position = "right",
   width = 0,
-  padding_left = -5,
   y_offset = 6,
   icon = {
     padding_right = 0,
