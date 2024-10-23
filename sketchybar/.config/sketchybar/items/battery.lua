@@ -120,3 +120,4 @@ local function toggle_remaining()
 end
 
 battery:subscribe("mouse.clicked", toggle_remaining)
+remaining:subscribe("mouse.clicked", toggle_remaining)

@@ -4,6 +4,7 @@ return {
   sf_symbol = {
     clock = "􀐫 ",
     calendar = "􀉉 ",
+    cpu = "􀫥 ",
     wifi = {
       upload = "􀓂 ",
       download = "􀓃 ",
