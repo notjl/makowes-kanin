@@ -10,33 +10,39 @@ local memory_bracket = sbar.add("bracket", "memory.bracket", {
   swap.name,
 }, {} )
 
+local function get_used_ram()
+  local raw_result = io.popen("memory_pressure")
+  local output = raw_result:read("*a")
+  raw_result:close()
+
+  local free_ram = output:match("System%-wide memory free percentage: (%d+)")
+  return 100 - tonumber(free_ram)
+end
+
 ram:subscribe({"routine", "forced"}, function()
-  sbar.exec("memory_pressure | grep -o 'System-wide memory free percentage: [0-9]*' | awk '{print $5}'",
-  function(mem)
-    local usedram = 100 - tonumber(mem)
-    local label = usedram .. "%"
+  local used_ram = get_used_ram()
+  local label = used_ram .. "%"
 
-    local color = nil
+  local color = nil
 
-    if usedram >= 80 then
-      color = colors.change_alpha(colors.red, 0.8)
-    elseif usedram >= 60 then
-      color = colors.change_alpha(colors.maroon, 0.8)
-    elseif usedram >= 30 then
-      color = colors.change_alpha(colors.peach, 0.8)
-    elseif usedram >= 20 then
-      color = colors.change_alpha(colors.yellow, 0.8)
-    else
-      color = colors.change_alpha(colors.blue, 0.8)
-    end
+  if used_ram >= 80 then
+    color = colors.change_alpha(colors.red, 0.8)
+  elseif used_ram >= 60 then
+    color = colors.change_alpha(colors.maroon, 0.8)
+  elseif used_ram >= 30 then
+    color = colors.change_alpha(colors.peach, 0.8)
+  elseif used_ram >= 20 then
+    color = colors.change_alpha(colors.yellow, 0.8)
+  else
+    color = colors.change_alpha(colors.blue, 0.8)
+  end
 
-    ram:set({
-      label = {
-        string = label,
-      },
-    })
-    memory_bracket:set({ background = { border_color = color } })
-  end)
+  ram:set({
+    label = {
+      string = label,
+    },
+  })
+  memory_bracket:set({ background = { border_color = color } })
 end)
 
 local function show_swap()
