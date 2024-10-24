@@ -24,6 +24,7 @@ return {
   nerd_font = {
     clock = "󱑓",
     calendar = "",
+    logo = { "", "󰹻", "", "󰀚", "" },
     wifi = {
       upload = "󰚷",
       download = "󰚶",
