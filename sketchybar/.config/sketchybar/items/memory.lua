@@ -1,49 +1,13 @@
 local icons = require("config.icons")
 local colors = require("config.colors")
 
-sbar.add("item", {
-  position = "left",
-})
+local ram = require("items.ram")
+local swap = require("items.swap")
 
-local ram = sbar.add("item", "memory.ram", {
-  position = "left",
-  width = 0,
-  y_offset = 6,
-  update_freq = 4,
-  icon = {
-    string = icons.nerd_font.memory.ram,
-    padding_left = 12,
-    font = { size = 10.0 },
-  },
-  label = {
-    string = "???%",
-    color = colors.subtext0,
-    font = { size = 13.0 },
-  },
-})
-
-local swap = sbar.add("item", "memory.swap", {
-  position = "left",
-  background = { drawing = false },
-  y_offset = -3,
-  update_freq = 4,
-  icon = {
-    string = icons.nerd_font.memory.swap,
-    padding_left = 14,
-    font = { size = 10.0},
-  },
-  label = {
-    string = "??.?Mb",
-    padding_right = 12,
-    font = { size = 13.0 },
-  },
-})
-
-
-sbar.add("bracket", {
+local memory_bracket = sbar.add("bracket", "memory.bracket", {
   ram.name,
   swap.name,
-}, {})
+}, {} )
 
 ram:subscribe({"routine", "forced"}, function()
   sbar.exec("memory_pressure | grep -o 'System-wide memory free percentage: [0-9]*' | awk '{print $5}'",
@@ -54,58 +18,72 @@ ram:subscribe({"routine", "forced"}, function()
     local color = nil
 
     if usedram >= 80 then
-      color = colors.red
+      color = colors.change_alpha(colors.red, 0.6)
     elseif usedram >= 60 then
-      color = colors.maroon
+      color = colors.change_alpha(colors.maroon, 0.6)
     elseif usedram >= 30 then
-      color = colors.peach
+      color = colors.change_alpha(colors.peach, 0.6)
     elseif usedram >= 20 then
-      color = colors.yellow
+      color = colors.change_alpha(colors.yellow, 0.6)
     else
-      color = colors.blue
+      color = colors.change_alpha(colors.blue, 0.6)
     end
 
     ram:set({
       label = {
         string = label,
-        color = color
+        -- color = color
       },
     })
+    memory_bracket:set({ background = { border_color = color } })
   end)
 end)
 
-local function format_swap_usage(swapuse)
-  if swapuse == 0 then
-    return "0.00Mb", colors.subtext0
-  elseif swapuse >= 1536 then
-    return string.format("%.2fGb", swapuse / 1000), colors.red
-  elseif swapuse >= 1000 then
-    return string.format("%.2fGb", swapuse / 1000), colors.maroon
-  elseif swapuse >= 512 then
-    return string.format("%03dMb", math.floor(swapuse)), colors.peach
-  elseif swapuse >= 256 then
-    return string.format("%03dMb", math.floor(swapuse)), colors.yellow
-  elseif swapuse >= 128 then
-    return string.format("%03dMb", math.floor(swapuse)), colors.blue
+local function show_swap()
+  sbar.animate("tanh", 30, function()
+    swap:set({
+      icon = { font = { size = 10.0 } },
+      label = { font = { size = 13.0 } }
+    })
+  end)
+  sbar.animate("tanh", 10, function()
+    ram:set({
+      y_offset = 6,
+      icon = { font = { size = 10.0 } },
+      label = { font = { size = 13.0 } },
+    })
+    memory_bracket:set({ background = { height = 35 } })
+  end)
+end
+
+local function hide_swap()
+  sbar.animate("tanh", 10, function()
+    swap:set({
+      icon = { font = { size = 0.5 } },
+      label = { font = { size = 0.5 } }
+    })
+  end)
+  sbar.animate("tanh", 30, function()
+    ram:set({
+      y_offset = 0,
+      icon = { font = { size = 15.0 } },
+      label = { font = { size = 15.0 } },
+    })
+    memory_bracket:set({ background = { height = 28 } })
+  end)
+end
+
+local function toggle_swap()
+  local should_draw = ram:query().geometry.y_offset == 0
+  if should_draw then
+    -- sbar.animate("tanh", 30, show_swap)
+    show_swap()
+  else
+    hide_swap()
+    -- sbar.animate("tanh", 30, hide_swap)
   end
 end
 
-swap:subscribe({"routine", "forced"}, function()
-  sbar.exec("sysctl -n vm.swapusage | awk '{print $6}' | sed 's/M//'",
-  function(swapstore_untrimmed)
-    if swapstore_untrimmed then
-      local swapstore = swapstore_untrimmed:gsub("%s*$", "")
+ram:subscribe("mouse.clicked", toggle_swap)
+swap:subscribe("mouse.clicked", toggle_swap)
 
-      swapstore = swapstore:gsub(",", ".")
-      local swapuse = tonumber(swapstore)
-
-      local swap_label, swap_color = format_swap_usage(swapuse)
-      swap:set({
-        label = {
-          string = swap_label,
-          color = swap_color,
-        },
-      })
-    end
-  end)
-end)
