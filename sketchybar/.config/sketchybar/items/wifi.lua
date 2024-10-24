@@ -62,7 +62,7 @@ wifi:subscribe({"wifi_change", "system_woke"}, function(env)
     })
     wifi_bracket:set({
       background = {
-        border_color = connected and colors.change_alpha(colors.white, 0.6) or colors.red,
+        border_color = connected and colors.change_alpha(colors.text, 0.9) or colors.change_alpha(colors.red, 0.8)
       }
     })
   end)

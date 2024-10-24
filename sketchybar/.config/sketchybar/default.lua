@@ -6,7 +6,7 @@ sbar.default({
   update_freq = 10,
   background = {
     border_width = 3,
-    border_color = colors.change_alpha(colors.overlay0, 0.9),
+    border_color = colors.change_alpha(colors.text, 0.8),
     color = colors.change_alpha(colors.surface0, 0.9),
     corner_radius = 10,
     height = 28,

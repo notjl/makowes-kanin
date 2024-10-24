@@ -8,7 +8,7 @@ local date = sbar.add("item", "date", {
 })
 
 date:subscribe({"system_wake", "routine", "forced"}, function()
-  local alpha = 0.45
+  local alpha = 0.8
   local days_color = {
     colors.change_alpha(colors.red, alpha),
     colors.change_alpha(colors.yellow, alpha),

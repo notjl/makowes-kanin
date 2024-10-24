@@ -18,15 +18,15 @@ ram:subscribe({"routine", "forced"}, function()
     local color = nil
 
     if usedram >= 80 then
-      color = colors.change_alpha(colors.red, 0.6)
+      color = colors.change_alpha(colors.red, 0.8)
     elseif usedram >= 60 then
-      color = colors.change_alpha(colors.maroon, 0.6)
+      color = colors.change_alpha(colors.maroon, 0.8)
     elseif usedram >= 30 then
-      color = colors.change_alpha(colors.peach, 0.6)
+      color = colors.change_alpha(colors.peach, 0.8)
     elseif usedram >= 20 then
-      color = colors.change_alpha(colors.yellow, 0.6)
+      color = colors.change_alpha(colors.yellow, 0.8)
     else
-      color = colors.change_alpha(colors.blue, 0.6)
+      color = colors.change_alpha(colors.blue, 0.8)
     end
 
     ram:set({
@@ -76,11 +76,9 @@ end
 local function toggle_swap()
   local should_draw = ram:query().geometry.y_offset == 0
   if should_draw then
-    -- sbar.animate("tanh", 30, show_swap)
     show_swap()
   else
     hide_swap()
-    -- sbar.animate("tanh", 30, hide_swap)
   end
 end
 

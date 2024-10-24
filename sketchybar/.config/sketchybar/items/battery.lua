@@ -77,13 +77,13 @@ battery:subscribe({"routine", "power_source_charge", "system_woke"}, function()
       icon = icon_base[charge_index]
 
       if charge > 30 then
-        border_color = colors.change_alpha(colors.green, 0.6)
+        border_color = colors.change_alpha(colors.green, 0.8)
       elseif charge > 20 then
-        border_color = colors.change_alpha(colors.yellow, 0.6)
+        border_color = colors.change_alpha(colors.yellow, 0.8)
       elseif charge > 10 then
-        border_color = colors.change_alpha(colors.peach, 0.6)
+        border_color = colors.change_alpha(colors.peach, 0.8)
       elseif charge > 1 then
-        border_color = colors.change_alpha(colors.red, 0.6)
+        border_color = colors.change_alpha(colors.red, 0.8)
       end
     end
 
