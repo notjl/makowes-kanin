@@ -3,6 +3,7 @@ local colors = require("config.colors")
 
 sbar.add("item", {
   position = "left",
+  background = { drawing = false },
 })
 
 local ram = sbar.add("item", "memory.ram", {

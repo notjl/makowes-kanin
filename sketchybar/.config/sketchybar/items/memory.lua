@@ -3,6 +3,7 @@ local colors = require("config.colors")
 
 local ram = require("items.ram")
 local swap = require("items.swap")
+local gap = require("items.storage")
 
 local memory_bracket = sbar.add("bracket", "memory.bracket", {
   ram.name,
@@ -32,7 +33,6 @@ ram:subscribe({"routine", "forced"}, function()
     ram:set({
       label = {
         string = label,
-        -- color = color
       },
     })
     memory_bracket:set({ background = { border_color = color } })
@@ -45,6 +45,7 @@ local function show_swap()
       icon = { font = { size = 10.0 } },
       label = { font = { size = 13.0 } }
     })
+    gap:set({ width = 4 })
   end)
   sbar.animate("tanh", 10, function()
     ram:set({
@@ -62,6 +63,7 @@ local function hide_swap()
       icon = { font = { size = 0.5 } },
       label = { font = { size = 0.5 } }
     })
+    gap:set({ width = "dynamic" })
   end)
   sbar.animate("tanh", 30, function()
     ram:set({
@@ -84,4 +86,3 @@ end
 
 ram:subscribe("mouse.clicked", toggle_swap)
 swap:subscribe("mouse.clicked", toggle_swap)
-
