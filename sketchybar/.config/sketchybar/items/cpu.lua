@@ -3,19 +3,13 @@ local colors = require("config.colors")
 
 sbar.exec("killall cpu_load >/dev/null; $CONFIG_DIR/helpers/event_providers/cpu_load/bin/cpu_load cpu_update 4.0")
 
-sbar.add("item", {
-  position = "right",
-  width = 8,
-  background = { drawing = false },
-})
-
 local cpu = sbar.add("graph", "cpu" , 26, {
-  position = "right",
+  position = "left",
   padding_right = 8,
-  width = 0,
   y_offset = -5,
   background = {
     height = 10,
+    border_color = colors.transparent,
   },
   graph = {
     color = colors.sapphire,
@@ -58,5 +52,11 @@ cpu:subscribe("cpu_update", function(env)
     label = env.total_load .. "%",
   })
 end)
+
+sbar.add("item", {
+  position = "left",
+  background = { drawing = false },
+  width = 6,
+})
 
 sbar.add("bracket", { cpu.name }, {})

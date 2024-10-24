@@ -5,6 +5,10 @@ return {
     clock = "􀐫 ",
     calendar = "􀉉 ",
     cpu = "􀫥 ",
+    memory = {
+      ram = "􀫦 ",
+      swap = "􀅋 ",
+    },
     wifi = {
       upload = "􀓂 ",
       download = "􀓃 ",
@@ -25,6 +29,10 @@ return {
     clock = "󱑓",
     calendar = "",
     logo = { "", "󰹻", "", "󰀚", "" },
+    memory = {
+      ram = "",
+      swap = "󰍛",
+    },
     wifi = {
       upload = "󰚷",
       download = "󰚶",

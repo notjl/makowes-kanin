@@ -6,10 +6,11 @@ local logos = icons.nerd_font.logo
 local logo = sbar.add("item", "logo", {
   position = "left",
   update_freq = 3600,
+  padding_right = 6,
   icon = {
     string = "󰹻",
     padding_left = 12,
-    padding_right = 10,
+    padding_right = 11,
     font = {
       size = 15
     },
