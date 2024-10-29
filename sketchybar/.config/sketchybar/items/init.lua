@@ -9,3 +9,6 @@ require("items.logo")
 require("items.cpu")
 require("items.memory")
 require("items.storage")
+
+-- Notch item
+require("items.spaces")

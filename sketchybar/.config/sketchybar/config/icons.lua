@@ -1,6 +1,7 @@
 return {
   -- SF Symbols need to have an y_offset of 1 since they aren't centered vertic-
   -- ally.
+  spaces = { "㆒", "二", "三", "四", "五", "六", "七", "八", "九", "十" },
   sf_symbol = {
     clock = "􀐫 ",
     calendar = "􀉉 ",
