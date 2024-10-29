@@ -20,29 +20,32 @@ local function get_used_ram()
 end
 
 ram:subscribe({"routine", "forced"}, function()
-  local used_ram = get_used_ram()
-  local label = used_ram .. "%"
+  sbar.exec("memory_pressure", function(ram_info)
+    local found, _, free_ram = ram_info:find("System%-wide memory free percentage: (%d+)")
+    local used_ram = 100 - tonumber(free_ram)
+    local label = used_ram .. "%"
 
-  local color = nil
+    local color = nil
 
-  if used_ram >= 80 then
-    color = colors.change_alpha(colors.red, 0.8)
-  elseif used_ram >= 60 then
-    color = colors.change_alpha(colors.maroon, 0.8)
-  elseif used_ram >= 30 then
-    color = colors.change_alpha(colors.peach, 0.8)
-  elseif used_ram >= 20 then
-    color = colors.change_alpha(colors.yellow, 0.8)
-  else
-    color = colors.change_alpha(colors.blue, 0.8)
-  end
+    if used_ram >= 80 then
+      color = colors.change_alpha(colors.red, 0.8)
+    elseif used_ram >= 60 then
+      color = colors.change_alpha(colors.maroon, 0.8)
+    elseif used_ram >= 30 then
+      color = colors.change_alpha(colors.peach, 0.8)
+    elseif used_ram >= 20 then
+      color = colors.change_alpha(colors.yellow, 0.8)
+    else
+      color = colors.change_alpha(colors.blue, 0.8)
+    end
 
-  ram:set({
-    label = {
-      string = label,
-    },
-  })
-  memory_bracket:set({ background = { border_color = color } })
+    ram:set({
+      label = {
+        string = label,
+      },
+    })
+    memory_bracket:set({ background = { border_color = color } })
+  end)
 end)
 
 local function show_swap()

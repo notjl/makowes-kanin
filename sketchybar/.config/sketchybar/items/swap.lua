@@ -34,24 +34,17 @@ local function format_swap_usage(swapuse)
   end
 end
 
-local function get_swap_used()
-  local raw_result = io.popen("sysctl -n vm.swapusage")
-  local output = raw_result:read("*a")
-  raw_result:close()
-
-  local swap_used = output:match("used = (%d+%.%d+)M"):gsub("%s*$", ""):gsub(",", ".")
-
-  return tonumber(swap_used)
-end
-
 swap:subscribe({"routine", "forced"}, function()
-  local swap_label, swap_color = format_swap_usage(get_swap_used())
-  swap:set({
-    label = {
-      string = swap_label,
-      color = swap_color,
-    },
-  })
+  sbar.exec("sysctl -n vm.swapusage", function(swap_info)
+    local found, _, swap_used = swap_info:find("used = (%d+%.%d+)M")
+    local swap_label, swap_color = format_swap_usage(tonumber(swap_used))
+    swap:set({
+      label = {
+        string = swap_label,
+        color = swap_color,
+      },
+    })
+  end)
 end)
 
 return swap
