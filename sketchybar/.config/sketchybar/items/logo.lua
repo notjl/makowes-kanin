@@ -18,12 +18,6 @@ local logo = sbar.add("item", "logo", {
   label = { drawing = false },
 })
 
-local function hide_logo()
-end
-
-local function show_logo(icon_index)
-end
-
 logo:subscribe("routine", function()
   local icon_index = math.random(#logos)
 

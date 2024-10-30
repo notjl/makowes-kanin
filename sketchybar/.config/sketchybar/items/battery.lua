@@ -53,49 +53,6 @@ end
 
 hide_remaining()
 
-
-battery:subscribe({"routine", "power_source_charge", "system_woke"}, function()
-  sbar.exec("pmset -g batt", function(batt_info)
-    local icon = "!"
-    local label = "?"
-    local border_color = nil
-
-    local found, _, charge = batt_info:find("(%d+)%%")
-    local found_rem, _, remaining_str = batt_info:find(" (%d+:%d+) remaining")
-    local charging, _, _ = batt_info:find("AC Power")
-
-    -- local remaining_label = "2:20H"
-    local remaining_label = found_rem and remaining_str .. "H" or "--:--"
-
-    if found then
-      charge = tonumber(charge)
-      label = charge .. "%"
-      label = (charge < 10) and "0" .. label or label
-
-      local icon_base = charging and batt_icon.charging or batt_icon
-      local charge_index = "_" .. math.floor(charge / 10) * 10
-      icon = icon_base[charge_index]
-
-      if charge > 30 then
-        border_color = colors.change_alpha(colors.green, 0.8)
-      elseif charge > 20 then
-        border_color = colors.change_alpha(colors.yellow, 0.8)
-      elseif charge > 10 then
-        border_color = colors.change_alpha(colors.peach, 0.8)
-      elseif charge > 1 then
-        border_color = colors.change_alpha(colors.red, 0.8)
-      end
-    end
-
-    battery_bracket:set({ background = { border_color = border_color } })
-    battery:set({
-      icon = { string = icon },
-      label = { string = label },
-    })
-    remaining:set({ label = { string = remaining_label } })
-  end)
-end)
-
 local function show_remaining()
   battery_bracket:set({ background = { height = 35 } })
   remaining:set({ label = { width = "dynamic" } })
@@ -118,6 +75,90 @@ local function toggle_remaining()
     sbar.animate("tanh", 25, hide_remaining)
   end
 end
+
+local function show_status(status)
+  battery_bracket:set({ background = { height = 35 } })
+  remaining:set({ label = { width = "dynamic" } })
+  battery:set({
+    label = {
+      y_offset = 6,
+      padding_left = (status == "CHARGING") and 36 or 54,
+      font = {
+        size = 13.0,
+      },
+    },
+  })
+end
+
+local function power_source_change(status)
+  battery:set({ update_freq = 9 })
+  remaining:set({ label = { string = status } })
+  sbar.animate("tanh", 25, function()
+    show_status(status)
+  end)
+  sbar.delay(2.5, function()
+    battery:set({ update_freq = 1 })
+    sbar.animate("tanh", 25, hide_remaining)
+  end)
+end
+
+local function toggle_status(env)
+end
+
+local function batt_charge_and_icon(charge, condition)
+  local icon_base = condition and batt_icon.charging or batt_icon
+  local charge_index = "_" .. math.floor(charge / 10) * 10
+  return charge, icon_base[charge_index]
+end
+
+battery:subscribe({"routine", "system_woke"}, function()
+
+  sbar.exec("pmset -g batt", function(batt_info)
+    local icon = "!"
+    local label = "?"
+    local border_color = nil
+
+    local found, _, charge = batt_info:find("(%d+)%%")
+    local found_rem, _, remaining_str = batt_info:find(" (%d+:%d+) remaining")
+    local charging, _, _ = batt_info:find("AC Power")
+
+    local remaining_label = found_rem and remaining_str .. "H" or "--:--"
+
+    if found then
+      charge, icon = batt_charge_and_icon(tonumber(charge), charging)
+      label = charge .. "%"
+      label = (charge < 10) and "0" .. label or label
+
+      if charge > 30 then
+        border_color = colors.change_alpha(colors.green, 0.8)
+      elseif charge > 20 then
+        border_color = colors.change_alpha(colors.yellow, 0.8)
+      elseif charge > 10 then
+        border_color = colors.change_alpha(colors.peach, 0.8)
+      elseif charge > 1 then
+        border_color = colors.change_alpha(colors.red, 0.8)
+      end
+    end
+
+    battery_bracket:set({ background = { border_color = border_color } })
+    battery:set({
+      icon = { string = icon },
+      label = { string = label },
+    })
+
+    battery:subscribe("power_source_change", function(env)
+      _, icon = batt_charge_and_icon(tonumber(charge), env.INFO == "AC")
+      battery:set({ icon = { string = icon } })
+      if env.INFO == "AC" then
+        power_source_change("CHARGING")
+      else
+        power_source_change("DISCHARGING")
+      end
+    end)
+
+    remaining:set({ label = { string = remaining_label } })
+  end)
+end)
 
 battery:subscribe("mouse.clicked", toggle_remaining)
 remaining:subscribe("mouse.clicked", toggle_remaining)
