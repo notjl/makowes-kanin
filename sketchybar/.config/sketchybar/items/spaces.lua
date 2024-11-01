@@ -75,6 +75,7 @@ space_observer:subscribe("aerospace_workspace_change", function(env)
   select_focused_space(env)
 end)
 
+-- BoringNotch interaction
 local interrupt = 0
 local function adjust_spaces(flag)
   if (not flag) then interrupt = interrupt - 1 end
@@ -85,6 +86,16 @@ local function adjust_spaces(flag)
   end)
 end
 
+local function adjust_spaces_test(flag)
+  if (not flag) then interrupt = interrupt - 1 end
+  if interrupt > 0 and (not flag) then return end
+
+  sbar.animate("tanh", 26, function()
+    sbar.bar({ notch_width = flag and 480 or 320 })
+  end)
+end
+
+local music_state = nil
 space_observer:subscribe("media_change", function(env)
   sbar.exec("ps aux", function(processes)
     local found, _, _ = processes:find("boringNotch")
@@ -92,8 +103,36 @@ space_observer:subscribe("media_change", function(env)
       if env.INFO.state == "playing" then
         adjust_spaces(true)
         interrupt = interrupt + 1
+        music_state = env.INFO.state
       else
         sbar.delay(3, adjust_spaces)
+        music_state = env.INFO.state
+      end
+    end
+  end)
+end)
+
+space_observer:subscribe("power_source_change", function(env)
+  sbar.exec("ps aux", function(processes)
+    local found, _, _ = processes:find("boringNotch")
+    if found then
+      if env.INFO == "AC" then
+        sbar.delay(3, function()
+          sbar.animate("tanh", 26, function()
+            sbar.bar({ notch_width = 470 })
+          end)
+        end)
+        sbar.delay(6, function()
+          if music_state == "playing" then
+            sbar.animate("tanh", 26, function()
+              sbar.bar({ notch_width = 420 })
+            end)
+          else
+            sbar.animate("tanh", 26, function()
+              sbar.bar({ notch_width = 320 })
+            end)
+          end
+        end)
       end
     end
   end)
