@@ -75,3 +75,66 @@ space_observer:subscribe("aerospace_workspace_change", function(env)
   select_focused_space(env)
 end)
 
+local interrupt = 0
+local function adjust_spaces(flag)
+  if (not flag) then interrupt = interrupt - 1 end
+  if interrupt > 0 and (not flag) then return end
+
+  sbar.animate("tanh", 26, function()
+    sbar.bar({ notch_width = flag and 420 or 320 })
+  end)
+end
+
+space_observer:subscribe("media_change", function(env)
+  sbar.exec("ps aux", function(processes)
+    local found, _, _ = processes:find("boringNotch")
+    if found then
+      if env.INFO.state == "playing" then
+        adjust_spaces(true)
+        interrupt = interrupt + 1
+      else
+        sbar.delay(3, adjust_spaces)
+      end
+    end
+  end)
+end)
+
+--[[ To be implemented using a separate sketchybar instance using triggers
+local boringnotch_observer = sbar.add("item", {
+  padding_left = 0,
+  padding_right = 0,
+  position = "center",
+  width = 324,
+  background = {
+    border_color = colors.transparent,
+    color = colors.transparent,
+    height = 65,
+  },
+  label = { drawing = false },
+  icon = { drawing = false },
+})
+
+boringnotch_observer:subscribe("mouse.entered", function()
+  sbar.exec("ps aux", function(processes)
+    local found, _, _ = processes:find("boringNotch")
+    if found then
+      boringnotch_observer:set({ width = 580 })
+      sbar.animate("tanh", 30, function()
+        sbar.bar({ notch_width = 600 })
+      end)
+    end
+  end)
+end)
+
+boringnotch_observer:subscribe("mouse.exited", function()
+  sbar.exec("ps aux", function(processes)
+    local found, _, _ = processes:find("boringNotch")
+    if found then
+      boringnotch_observer:set({ width = 324 })
+      sbar.animate("tanh", 30, function()
+        sbar.bar({ notch_width = 320 })
+      end)
+    end
+  end)
+end)
+--]]

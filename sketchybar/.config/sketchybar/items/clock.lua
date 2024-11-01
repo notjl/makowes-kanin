@@ -27,10 +27,3 @@ clock:subscribe({"routine", "forced"}, function()
     }
   })
 end)
-
--- sbar.add("bracket", {"clock", "date"}, {
-  -- background = {
-    -- color = 0x20EEEEEE,
-    --height = 30
-  -- },
--- })
